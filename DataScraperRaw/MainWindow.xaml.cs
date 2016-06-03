@@ -14,12 +14,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DataScraperRaw {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window {
+	public partial class MainWindow{
 		public MainWindow() {
 			InitializeComponent();
+			WebBrowser.LoadCompleted += BrowserOnLoadCompleted;
+		}
+
+		private void BrowserOnLoadCompleted(object sender, NavigationEventArgs navigationEventArgs){	
+			
 		}
 	}
 }
