@@ -22,12 +22,7 @@ namespace DataScraperRaw{
 		}
 
 		private void HandlerOnOnError(RequestHelper.RequestHandler requestHandler){
-			if(Handler.OnFailException is System.TimeoutException){
-				Handler.SendCallback();
-				return;
-			}
-			State = RequestState.Failed;
-			if (Change != null) Change(this);
+			Handler.SendCallback();
 		}
 
 		private void HandlerOnOnSuccess(RequestHelper.RequestHandler requestHandler){

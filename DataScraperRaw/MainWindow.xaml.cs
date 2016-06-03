@@ -52,7 +52,7 @@ namespace DataScraperRaw {
 			base.OnInitialized(e);
 
 			var timer = new System.Timers.Timer();
-			timer.Interval = 1000;
+			timer.Interval = 100;
 			timer.AutoReset = true;
 			timer.Elapsed += (sender, args) => Dispatcher.BeginInvoke((Action)TimerOnElapsed);
 			timer.Start();
@@ -69,7 +69,7 @@ namespace DataScraperRaw {
 			EtaLabel.Content = "∞";
 			TotalLabel.Content = _allRequests.Count;
 
-			_index = 8;
+			_index = 10;
 			_stopwatch.Start();
 			foreach (var request in _allRequests.Take(_index)){
 				request.Send();
@@ -87,14 +87,10 @@ namespace DataScraperRaw {
 			SaveFile(request);
 		}
 
-		private static void SaveFile(Request request){
-			var regex = new System.Text.RegularExpressions.Regex(
-				"(?<id>[A-Z]{4}-[0-9]{5})"
-			);
-			var gameId = string.Join(", ", regex.Match(request.Response).Groups["id"].Captures.Cast<System.Text.RegularExpressions.Capture>());
-			if (string.IsNullOrEmpty(gameId)) return;
+
+		private void SaveFile(Request request){
 			System.IO.Directory.CreateDirectory(Environment.CurrentDirectory + "\\pages\\");
-			var file = System.IO.File.CreateText(Environment.CurrentDirectory + "\\pages\\" + gameId + ".html");
+			var file = System.IO.File.CreateText(Environment.CurrentDirectory + "\\pages\\#" + (_allRequests.IndexOf(request) + 1) + ".html");
 			file.Write(request.Response);
 		} 
 

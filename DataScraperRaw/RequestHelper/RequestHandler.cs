@@ -68,7 +68,7 @@ namespace DataScraperRaw.RequestHelper {
 			}
 		}
 
-		private readonly Task<RequestHandler> _task;
+		private Task<RequestHandler> _task;
 
 		public T ResponseAs<T>(){
 			if (RawResponseStream == null)
@@ -121,15 +121,15 @@ namespace DataScraperRaw.RequestHelper {
 		}
 
 		public RequestHandler SendCallback(){
+			_task = new Task<RequestHandler>(p => {
+				SendHttpRequest();
+				return this;
+			}, TaskCreationOptions.LongRunning);
 			_task.Start();
 			return this;
 		}
 
 		public RequestHandler(string url){
-			_task =  new Task<RequestHandler>(p => {
-				SendHttpRequest();
-				return this;
-			}, TaskCreationOptions.LongRunning);
 			Url = url;
 			QueryParams = new Dictionary<string, string>();
 			RequestHeaders = new Dictionary<string, string>();
