@@ -2,7 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
-    <WebBrowser Source="http://wiki.pcsx2.net/index.php/Category:Games" x:Name="WebBrowser">
-        
-    </WebBrowser>
+    <Grid>
+        <DataGrid x:Name="RequestGrid" IsReadOnly="True" Margin="0,34,0,0" />
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Total"></Label>
+            <Label x:Name="TotalLabel" Content="4533"></Label>
+            
+            <Label Content="| Handled"></Label>
+            <Label x:Name="HandledLabel" Content="345"></Label>
+
+            <Label Content="| Remaining"></Label>
+            <Label x:Name="RemainingLabel" Content="356"></Label>
+
+            <Label Content="| ETA"></Label>
+            <Label x:Name="EtaLabel" Content="356"></Label>
+        </StackPanel>
+    </Grid>
 </Window>
