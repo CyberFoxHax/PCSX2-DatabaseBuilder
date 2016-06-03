@@ -3,19 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <DataGrid x:Name="RequestGrid" IsReadOnly="True" Margin="0,34,0,0" />
-        <StackPanel Orientation="Horizontal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="22"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Total"></Label>
             <Label x:Name="TotalLabel" Content="4533"></Label>
-            
+
             <Label Content="| Handled"></Label>
             <Label x:Name="HandledLabel" Content="345"></Label>
 
             <Label Content="| Remaining"></Label>
             <Label x:Name="RemainingLabel" Content="356"></Label>
 
+            <Label Content="| Avg"></Label>
+            <Label x:Name="AvgSecLabel" Content="1.4/s"></Label>
+
             <Label Content="| ETA"></Label>
             <Label x:Name="EtaLabel" Content="356"></Label>
         </StackPanel>
+        <ProgressBar x:Name="ProgressBar" Grid.Row="1"></ProgressBar>
+        <DataGrid x:Name="RequestGrid" IsReadOnly="True" Grid.Row="2" />
     </Grid>
 </Window>

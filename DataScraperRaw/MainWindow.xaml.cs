@@ -34,13 +34,17 @@ namespace DataScraperRaw {
 				_stopwatch.Restart();
 				if (_changes == 0)
 					EtaLabel.Content = "∞";
-				else
-					EtaLabel.Content = decimal.Round((decimal) _remaining.Count/_changes/5/60, 2) + " minutes";
+				else{
+					var perSec = (decimal)_changes/5;
+					AvgSecLabel.Content = decimal.Round(perSec, 2) + "/s";
+					EtaLabel.Content = decimal.Round((decimal)_remaining.Count/perSec/60/60, 1) + "hours";
+				}
 				_changes = 0;
 			}
 			if (_changed == 0) {
 				return;
 			}
+			ProgressBar.Value = (double)_completed.Count / _allRequests.Count * 100;
 			_changed = 0;
 			RequestGrid.Items.Refresh();
 			HandledLabel.Content = _completed.Count;
