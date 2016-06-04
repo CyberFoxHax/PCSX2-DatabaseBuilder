@@ -49,6 +49,9 @@ namespace DataScraperRaw {
 			RequestGrid.Items.Refresh();
 			HandledLabel.Content = _completed.Count;
 			RemainingLabel.Content = _remaining.Count;
+			foreach (var source in _remaining.Where(p => p != null && p.State == RequestState.Running).ToList()) {
+				RequestGrid.SelectedItems.Add(source);
+			}
 		}
 
 
@@ -73,29 +76,49 @@ namespace DataScraperRaw {
 			EtaLabel.Content = "∞";
 			TotalLabel.Content = _allRequests.Count;
 
+			var exists = _allRequests.Where((t, i) => System.IO.File.Exists(Environment.CurrentDirectory + "\\pages\\#" + (i + 1) + ".html")).ToList();
+			foreach (var request in exists){
+				_remaining.Remove(request);
+				_completed.Add(request);
+			}
+
 			_index = 10;
 			_stopwatch.Start();
-			foreach (var request in _allRequests.Take(_index)){
+			foreach (var request in _remaining.Take(_index)){
 				request.Send();
 			}
+			foreach (var source in _remaining.Where(p => p.State == RequestState.Running)){
+				RequestGrid.SelectedItems.Add(source);
+			}
+
+			HandledLabel.Content = _completed.Count;
+			RemainingLabel.Content = _remaining.Count;
+			ProgressBar.Value = (double)_completed.Count / _allRequests.Count * 100;
 		}
 
 		private void ReqOnChange(Request request){
 			_changed++;
-			var next = _allRequests.FirstOrDefault(p=>p.State == RequestState.Waiting);
-			if (next == null) return;
+			var next = _remaining.FirstOrDefault(p=>p.State == RequestState.Waiting);
 
-			next.Send();
 			_remaining.Remove(request);
 			_completed.Add(request);
 			SaveFile(request);
+
+			if (next == null) return;
+			next.Send();
 		}
 
 
 		private void SaveFile(Request request){
-			System.IO.Directory.CreateDirectory(Environment.CurrentDirectory + "\\pages\\");
-			var file = System.IO.File.CreateText(Environment.CurrentDirectory + "\\pages\\#" + (_allRequests.IndexOf(request) + 1) + ".html");
-			file.Write(request.Response);
+			try{
+				System.IO.Directory.CreateDirectory(Environment.CurrentDirectory + "\\pages\\");
+				var file = System.IO.File.CreateText(Environment.CurrentDirectory + "\\pages\\#" + (_allRequests.IndexOf(request) + 1) + ".html");
+				file.Write(request.Response);
+				file.Close();
+			}
+			catch (Exception){
+			}
+			
 		} 
 
 		private void BrowserOnLoadCompleted(object sender, NavigationEventArgs navigationEventArgs){
