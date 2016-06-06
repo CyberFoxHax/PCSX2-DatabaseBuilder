@@ -1,6 +1,9 @@
 ﻿namespace WebPageParser.Models{
-	public class GraphicsPlugin{
-		public RendererBackend RenderMode { get; set; }
+	[System.Data.Linq.Mapping.Table]
+	public class GraphicsPlugin {
+		[System.Data.Linq.Mapping.Column(IsPrimaryKey = true)]
+		public int Id { get; set; }
+		public Enum.RendererBackend RenderMode { get; set; }
 		public bool UseHardwareRenderer { get; set; }
 	}
 }

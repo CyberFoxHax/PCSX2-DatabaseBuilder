@@ -17,6 +17,27 @@ namespace WebPageParser {
 	public partial class MainWindow {
 		public MainWindow() {
 			InitializeComponent();
+
+			System.IO.File.Delete(Environment.CurrentDirectory + "\\" + Context.PcsxContext.DatabaseName);
+			var ctx = new Context.PcsxContext();
+			ctx.CreateTables();
+
+			var disc = ctx.GameDisks.Add(new Models.GameDisk{
+				PlayableLinux = Models.Enum.Playable.Ingame,
+				PlayableWindows = Models.Enum.Playable.Broken,
+			});
+			
+			ctx.SaveChanges();
+
+			var discInfo = ctx.GameDiskInfoes.Add(new Models.GameDiskInfo {
+				GameDiskId = disc.GameDiskId,
+			});
+
+			ctx.SaveChanges();
+
+			ctx = new Context.PcsxContext();
+			discInfo = ctx.GameDiskInfoes.First();
+
 		}
 	}
 }

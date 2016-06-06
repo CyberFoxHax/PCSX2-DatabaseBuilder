@@ -3,65 +3,41 @@
   <Class Name="WebPageParser.Models.GameBasicInfo">
     <Position X="1.25" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAEAAAAIAAAAABIAAAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAgAEAAAAIAAAAABIAAAAAAAAAAAABAAAA=</HashCode>
       <FileName>Models\GameBasicInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WebPageParser.Models.GameDisk" Collapsed="true">
+  <Class Name="WebPageParser.Models.GameDisk">
     <Position X="4" Y="3.75" Width="1.5" />
-    <AssociationLine Name="PlayableWindows" Type="WebPageParser.Models.Playable">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.081" Y="0.047" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="PlayableLinux" Type="WebPageParser.Models.Playable">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.277" Y="0.018" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="PlayableMac" Type="WebPageParser.Models.Playable">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.37" Y="0.05" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAAAAAAAAQABAEAAAAAAAACAAAAAAACAAA=</HashCode>
+      <HashCode>AAACAAAAgAAAAAAAAAQABAEAAAAAAAACAAAAAAACAAA=</HashCode>
       <FileName>Models\GameDisk.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Region" />
-      <Property Name="PlayableWindows" />
-      <Property Name="PlayableLinux" />
-      <Property Name="PlayableMac" />
       <Property Name="PcsxProperties" />
-      <Property Name="GameBasicInfo" />
     </ShowAsAssociation>
   </Class>
   <Class Name="WebPageParser.Models.GameDiskInfo">
     <Position X="4" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAgAAAoAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAgAAAoAAAAAAAgAAAAACAAAAACAAAAAIAAAAA=</HashCode>
       <FileName>Models\GameDiskInfo.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="AvailableLanguages" />
       <Property Name="GameDisk" />
     </ShowAsAssociation>
   </Class>
   <Class Name="WebPageParser.Models.Plugin">
-    <Position X="7" Y="9.5" Width="1.5" />
+    <Position X="7" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <HashCode>IAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
       <FileName>Models\Plugin.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="PluginKeyKey" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="WebPageParser.Models.PcsxProperties">
-    <Position X="4" Y="9.5" Width="1.5" />
+    <Position X="4" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAAAAAAQAAAAAAAAQAAAABAAAAAAgAAAAA=</HashCode>
+      <HashCode>AAACAAAAAQAAAAAAQAAAAAAAAQAAAABAAAAAAgAAAAA=</HashCode>
       <FileName>Models\PcsxProperties.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -72,17 +48,14 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="WebPageParser.Models.GraphicsPlugin">
-    <Position X="1.25" Y="9.5" Width="1.5" />
+    <Position X="4" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <HashCode>ACACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
       <FileName>Models\GraphicsPlugin.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="RenderMode" />
-    </ShowAsAssociation>
   </Class>
-  <Class Name="WebPageParser.Models.EmulationSettings" Collapsed="true">
-    <Position X="4" Y="11.5" Width="1.5" />
+  <Class Name="WebPageParser.Models.EmulationSettings">
+    <Position X="1" Y="8.75" Width="2" />
     <TypeIdentifier>
       <HashCode>IABGAABcQAIAEKJiABpIAAQYgQIQaAgAQlBQAgDACAI=</HashCode>
       <FileName>Models\EmulationSettings.cs</FileName>
@@ -110,14 +83,14 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="WebPageParser.Models.RendererBackend">
-    <Position X="1.25" Y="11.5" Width="1.5" />
+    <Position X="4" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEAAAAAAQAA=</HashCode>
       <FileName>Models\RendererBackend.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="WebPageParser.Models.PluginKeys">
-    <Position X="9.75" Y="9.5" Width="1.5" />
+    <Position X="9.75" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAEBAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\PluginKeys.cs</FileName>

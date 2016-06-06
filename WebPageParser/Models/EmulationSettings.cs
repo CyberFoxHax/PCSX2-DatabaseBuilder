@@ -1,29 +1,32 @@
 ﻿namespace WebPageParser.Models{
+	[System.Data.Linq.Mapping.Table]
 	public class EmulationSettings{
+		[System.Data.Linq.Mapping.Column(IsPrimaryKey = true)]
+		public int Id { get; set; }
 		// EE/IOP
-		public Compile EECompile { get; set; }
+		public Enum.Compile EECompile { get; set; }
 		public bool EECache { get; set; }
-		public Compile IopCompile { get; set; }
-		public RoundMode EEFPURoundMode { get; set; }
-		public ClampMode EEFPUClampMode { get; set; }
+		public Enum.Compile IopCompile { get; set; }
+		public Enum.RoundMode EEFPURoundMode { get; set; }
+		public Enum.ClampMode EEFPUClampMode { get; set; }
 
 		// VUs
-		public VUCompile V0Compile { get; set; }
-		public VUCompile V1Compile { get; set; }
-		public RoundMode V0V1RoundMode { get; set; }
-		public ClampMode V0V1ClampMode { get; set; }
+		public Enum.VUCompile V0Compile { get; set; }
+		public Enum.VUCompile V1Compile { get; set; }
+		public Enum.RoundMode V0V1RoundMode { get; set; }
+		public Enum.ClampMode V0V1ClampMode { get; set; }
 
 		// GS
 		public bool DisableFrameLimit { get; set; }
 		public float BaseFramerateAdjust { get; set; }
 		public float SlowMotionAdjust { get; set; }
 		public float TurboAdjust { get; set; }
-		public FrameSkipMode FrameSkipMode { get; set; }
+		public Enum.FrameSkipMode FrameSkipMode { get; set; }
 		public int FramesToDraw { get; set; }
 		public int FramesToSkip { get; set; }
 
 		// GSWindow
-		public GSAspectRatio GsAspectRatio { get; set; }
+		public Enum.GSAspectRatio GsAspectRatio { get; set; }
 		public int CustomWindowSizeX { get; set; }
 		public int CustomWindowSizeY { get; set; }
 		public float GSZoom { get; set; }
