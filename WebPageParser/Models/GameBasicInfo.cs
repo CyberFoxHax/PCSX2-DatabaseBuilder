@@ -8,7 +8,7 @@
 		public string Developer { get; set; }
 		public string Genre { get; set; }
 		public string UrlPcsx2Wiki { get; set; }
-		public byte ReviewScore { get; set; }
+		public byte? ReviewScore { get; set; }
 		public string Description { get; set; }
 	}
 }

@@ -89,6 +89,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Context\PcsxContext.cs" />
+    <Compile Include="DocumentParsing\ParseBasicInfo.cs" />
+    <Compile Include="DocumentParsing\Parser.cs" />
     <Compile Include="GamesUrlsList.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

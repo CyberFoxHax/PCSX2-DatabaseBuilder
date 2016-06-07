@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Windows;
 
 namespace WebPageParser {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application {
+	public partial class App{
+		public App(){
+			System.IO.File.Delete(Environment.CurrentDirectory + "\\" + Context.PcsxContext.DatabaseName);
+			var ctx = new Context.PcsxContext();
+			ctx.CreateTables();
+		}
 	}
 }

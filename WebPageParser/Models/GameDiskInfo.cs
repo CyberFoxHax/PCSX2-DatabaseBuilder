@@ -9,7 +9,7 @@ namespace WebPageParser.Models{
 		public string Tag { get; set; }
 		public int Crc { get; set; }
 		public System.DateTime ReleaseDate { get; set; }
-		public Enum.Language[] AvailableLanguages { get; set; }
+		public Enum.Language AvailableLanguages { get; set; }
 
 		public long GameDiskId { get; set; }
 		[ForeignKey("GameDiskId")]
