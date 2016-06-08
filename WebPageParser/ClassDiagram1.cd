@@ -1,32 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="WebPageParser.Models.GameBasicInfo">
-    <Position X="1.25" Y="1" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAgAEAAAAIAAAAABIAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>Models\GameBasicInfo.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="WebPageParser.Models.GameDisk">
-    <Position X="4" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAgAAAAAAAAAQABAEAAAAAAAACAAAAAAACAAA=</HashCode>
-      <FileName>Models\GameDisk.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="PcsxProperties" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="WebPageParser.Models.GameDiskInfo">
-    <Position X="4" Y="1" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAgAAAoAAAAAAAgAAAAACAAAAACAAAAAIAAAAA=</HashCode>
-      <FileName>Models\GameDiskInfo.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="GameDisk" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="WebPageParser.Models.Plugin">
     <Position X="7" Y="8.75" Width="1.5" />
     <TypeIdentifier>
@@ -61,40 +34,49 @@
       <FileName>Models\EmulationSettings.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Enum Name="WebPageParser.Models.Language">
-    <Position X="7" Y="1" Width="1.5" />
+  <Class Name="WebPageParser.Models.GameBasicInfo">
+    <Position X="1.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QgEAAACZAAAAAAAAQAAAAAAABAAAAAAQAAAAAAAAAEA=</HashCode>
-      <FileName>Models\Language.cs</FileName>
+      <HashCode>AAACAAAAAAAgAEAAAAIAAAAABKAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Models\GameBasicInfo.cs</FileName>
     </TypeIdentifier>
-  </Enum>
-  <Enum Name="WebPageParser.Models.Playable">
-    <Position X="7" Y="5.25" Width="1.5" />
+    <ShowAsCollectionAssociation>
+      <Property Name="GameDiscs" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WebPageParser.Models.GameDiscCrc">
+    <Position X="8.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAAAAAAAAABAIAAAAACAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\Playable.cs</FileName>
+      <HashCode>AAACAAAAAAAgAQAAAAAAAAAAACAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\GameDiscCrc.cs</FileName>
     </TypeIdentifier>
-  </Enum>
-  <Enum Name="WebPageParser.Models.Region">
-    <Position X="1.25" Y="4" Width="1.5" />
+    <ShowAsAssociation>
+      <Property Name="GameDisc" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WebPageParser.Models.GameDiscId">
+    <Position X="5.25" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAABAJAAAAAgAACABAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
-      <FileName>Models\Region.cs</FileName>
+      <HashCode>AAACAAEAAAAgAAAEAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\GameDiscId.cs</FileName>
     </TypeIdentifier>
-  </Enum>
-  <Enum Name="WebPageParser.Models.RendererBackend">
-    <Position X="4" Y="12.75" Width="1.5" />
+    <ShowAsAssociation>
+      <Property Name="GameDisc" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WebPageParser.Models.GameDisc">
+    <Position X="5.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEAAAAAAQAA=</HashCode>
-      <FileName>Models\RendererBackend.cs</FileName>
+      <HashCode>AAACAAAggAAIAAAAAAQAAAEAAAAAAAAGQAAAAAECAAA=</HashCode>
+      <FileName>Models\GameDisc.cs</FileName>
     </TypeIdentifier>
-  </Enum>
-  <Enum Name="WebPageParser.Models.PluginKeys">
-    <Position X="9.75" Y="8.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAEBAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\PluginKeys.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
+    <ShowAsAssociation>
+      <Property Name="GameBasicInfo" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="GameDiscIds" />
+      <Property Name="GameDiscCrcs" />
+    </ShowAsCollectionAssociation>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

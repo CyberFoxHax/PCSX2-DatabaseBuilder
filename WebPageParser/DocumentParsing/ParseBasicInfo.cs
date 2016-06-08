@@ -1,4 +1,5 @@
-using Enumerable = System.Linq.Enumerable;
+using System.Linq;
+using System;
 
 namespace WebPageParser.DocumentParsing{
 	public class ParseBasicInfo{
@@ -13,7 +14,7 @@ namespace WebPageParser.DocumentParsing{
 			basicInfo.Title = _doc["#firstHeading > span[dir=auto]"].Text();
 			basicInfo.ReviewScore = GetReviewScore();
 
-			var dict = new System.Collections.Generic.Dictionary<string, System.Action<string>>{
+			var dict = new System.Collections.Generic.Dictionary<string, Action<string>>{
 				{"Developer(s): ", p=>basicInfo.Developer = p},
 				{"Game description: ", p=>basicInfo.Description = p},
 				{"Genre: ", p=>basicInfo.Genre = p},
@@ -23,7 +24,7 @@ namespace WebPageParser.DocumentParsing{
 			};
 			var basicInfoElements = _doc["#mw-content-text > p"].Children();
 			foreach (var keyPair in dict) {
-				var keyElm = Enumerable.FirstOrDefault(basicInfoElements, p => p.InnerText == keyPair.Key);
+				var keyElm = basicInfoElements.FirstOrDefault(p => p.InnerText == keyPair.Key);
 				if (keyElm == null) continue;
 
 				var valueElm = keyElm.NextSibling;
@@ -47,14 +48,9 @@ namespace WebPageParser.DocumentParsing{
 			if (string.IsNullOrEmpty(reviewText)) return null;
 			var textSplit = reviewText.Split('/');
 			var low = float.Parse(textSplit[0]);
+			var high = (float) Math.Pow(10, Math.Ceiling(Math.Log10(low)));
 
-			float high;
-			if (textSplit.Length > 1)
-				high = float.Parse(textSplit[1]);
-			else
-				high = (float) System.Math.Floor(System.Math.Log(low));
-
-			return (byte) (255 * high/low);
+			return (byte)(100 * low/high);
 		}
 	}
 }

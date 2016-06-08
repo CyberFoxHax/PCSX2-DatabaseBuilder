@@ -1,19 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using CsQuery.ExtensionMethods;
-using CsQuery.ExtensionMethods.Internal;
 
 namespace WebPageParser {
 	public partial class MainWindow {
@@ -22,51 +11,78 @@ namespace WebPageParser {
 		 }
 
 		protected override async void OnInitialized(EventArgs e){
+			base.OnInitialized(e);
+			OutputText.Text = "Loading Files...";
+			var files = await LoadAllFiles();
+			OutputText.Text = "Processing...";
+			await Task.Run(() => Parse(files));
+		}
+
+		private async Task<string[]> LoadAllFiles(){
 			var regex = new System.Text.RegularExpressions.Regex("#([0-9]+).html");
-			var files = System.IO.Directory
+			return await Task.Run(() => System.IO.Directory
 				.GetFiles(Environment.CurrentDirectory + "\\pages\\")
 				.OrderBy(p => int.Parse(regex.Match(p).Groups[1].Value))
-				//.Skip(1074).Take(1)
-				//.Skip(1003).Take(1)
+				.Skip(1074).Take(1)
+				//.Take(100)
 				.Select(System.IO.File.ReadAllText)
-				.ToList();
+				.ToArray()
+			);
+		}
 
+		private async void Parse(string[] files){
 			var stopwatch = new System.Diagnostics.Stopwatch();
 			stopwatch.Start();
-			var result = new Models.GameBasicInfo[files.Count];
-			{
-				var grouped = new List<List<string>>();
-				var groupSize = files.Count / Environment.ProcessorCount;
-				for (var i = 0; i < files.Count; i += groupSize)
-					grouped.Add(files.Skip(i).Take(groupSize).ToList());
+			var result = new Models.GameBasicInfo[files.Length];
+			var completed = 0;
+			var grouped = new List<List<string>>();
+			var groupSize = (int) Math.Ceiling((double) files.Length/Environment.ProcessorCount);
+			for (var i = 0; i < files.Length; i += groupSize)
+				grouped.Add(files.Skip(i).Take(groupSize).ToList());
 
-				var diu = new object();
-
-				Parallel.ForEach(grouped, (items, state, i) =>{
-					var tempResult = new List<Models.GameBasicInfo>(items.Count);
-					var parser = new DocumentParsing.Parser();
-					for (var ii = 0; ii < items.Count; ii++) {
-						parser.Parse(items[ii]);
-						tempResult.Add(parser.GameBasicInfo);
-						result[i * groupSize + ii] = parser.GameBasicInfo;
-					}
-				});
-			}
+			Parallel.ForEach(grouped, (items, state, i) =>{
+				var tempResult = new List<Models.GameBasicInfo>(items.Count);
+				var parser = new DocumentParsing.Parser();
+				for (var ii = 0; ii < items.Count; ii++){
+					parser.Parse(items[ii], GamesUrlsList.Urls[i*groupSize + ii]);
+					tempResult.Add(parser.GameBasicInfo);
+					result[i*groupSize + ii] = parser.GameBasicInfo;
+					completed++;
+					if ((completed & 0x10) == 0)
+						Dispatcher.Invoke(() =>{
+							ProgressBar.Value = (float) completed/files.Length*100;
+							OutputText.Text = "Parsing: " + completed + "/" + files.Length;
+						});
+				}
+			});
 			stopwatch.Stop();
+			Dispatcher.Invoke(new Action(() => OutputText.Text = stopwatch.Elapsed + ""));
+			{
+				var context = new Context.PcsxContext();
 
-			var resultCount = result.Count(p => p != null);
+				var basicInfo = result.NotNull().ToArray();
+				var gameDiscs		= basicInfo.NotNullMany(p => p.GameDiscs	).ToArray();
+				var gameDiscCrcs	= gameDiscs.NotNullMany(p => p.GameDiscCrcs	).ToArray();
+				var gameDiscIds		= gameDiscs.NotNullMany(p => p.GameDiscIds	).ToArray();
 
-			for (var i = 0; i < result.Length; i++){
-				result[i].UrlPcsx2Wiki = GamesUrlsList.Urls[i];
+				context.GameBasicInfoes.AddRange(basicInfo);
+				await context.SaveChangesAsync();
+				//basicInfo.ForEach(p=>p.GameDiscs.ForEach(pp=>pp.GameBasicInfoId = p.Id));
+
+				context.GameDisks.AddRange(gameDiscs);
+				await context.SaveChangesAsync();
+				//gameDiscs.ForEach(p =>{
+				//	p.GameDiscCrcs.ForEach(pp => pp.GameDiskId = p.Id);
+				//	p.GameDiscIds .ForEach(pp => pp.GameDiskId = p.Id);
+				//});
+
+				context.GameDiskCrcs.AddRange(gameDiscCrcs);
+				await context.SaveChangesAsync();
+
+				context.GameDiskIds.AddRange(gameDiscIds);
+				await context.SaveChangesAsync();
 			}
-
-			Content = new TextBlock { Text = stopwatch.Elapsed.ToString() };
-
-			var context = new Context.PcsxContext();
-			context.GameBasicInfoes.AddRange(result.Where(p=>p != null));
-			await context.SaveChangesAsync();
-
-			Content = new TextBlock { Text = "Saved" };
+			Dispatcher.Invoke(new Action(() => OutputText.Text += "... Saved to DB"));
 		}
 	}
 }

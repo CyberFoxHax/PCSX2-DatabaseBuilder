@@ -1,8 +1,13 @@
 ﻿<Window x:Class="WebPageParser.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="85" Width="507">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="37*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="OutputText" Text="Diu" Grid.Row="0"></TextBlock>
+        <ProgressBar x:Name="ProgressBar" Grid.Row="1"></ProgressBar>
     </Grid>
 </Window>
