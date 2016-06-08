@@ -12,7 +12,6 @@ namespace WebPageParser.DocumentParsing{
 		}
 
 		public List<Models.GameDisc> Parse(){
-			var gameDiscs = new List<Models.GameDisc>();
 
 			var type = typeof (Models.Enum.Region);
 			var allowedRegions = type
@@ -36,13 +35,12 @@ namespace WebPageParser.DocumentParsing{
 					return allowedRegions.Contains(match);
 				})
 				.ToList();
-			var diskInfos = new List<Models.GameDisc>();
-			foreach (var th in regionheaders){
+			var gameDiscs = new List<Models.GameDisc>();
+			foreach (var th in regionheaders) {
 				var gameDiskInfo = new Models.GameDisc();
-				gameDiscs.Add(gameDiskInfo);
 				foreach (var tr in th.ParentNode.ParentNode.ChildElements.Skip(1))
 					ParseDiskInfo(tr, gameDiskInfo);
-				diskInfos.Add(gameDiskInfo);
+				gameDiscs.Add(gameDiskInfo);
 			}
 
 			return gameDiscs;
@@ -50,13 +48,36 @@ namespace WebPageParser.DocumentParsing{
 
 
 		private static void ParseDiskInfo(CsQuery.IDomElement tr, Models.GameDisc gameDisc){
-			var fieldType = tr.FirstElementChild.FirstElementChild.InnerText;
-			switch (fieldType){
+			var fieldType = tr.FirstElementChild.FirstElementChild;
+			if (fieldType.NodeName == "FONT")
+				fieldType = fieldType.FirstElementChild;
+			switch (fieldType.InnerText){
 				case "Serial numbers:": ParseDiskId(tr, gameDisc); break;
 				case "Release date:": ParseReleaseDate(tr, gameDisc); break;
 				case "CRCs:": ParseCrcs(tr, gameDisc); break;
+				case "Windows Status:": gameDisc.PlayableWindows = ParseStatus(tr); break;
+				case "Linux Status:": gameDisc.PlayableLinux = ParseStatus(tr); break;
+				case "Mac Status:": gameDisc.PlayableMac = ParseStatus(tr); break;
 				default: break;
 			}
+		}
+
+		private static Models.Enum.Playable ParseStatus(CsQuery.IDomElement tr){
+			var elm = tr
+				.ChildElements
+				.ElementAt(1);
+			string outVal;
+			if (elm.FirstElementChild != null)
+				outVal = elm.FirstElementChild.FirstElementChild.InnerText;
+			else
+				outVal = elm.InnerText;
+			switch (outVal){
+				case "Playable"	: return Models.Enum.Playable.Playable;
+				case "Ingame"	: return Models.Enum.Playable.Ingame;
+				case "Broken"	: return Models.Enum.Playable.Broken;
+				case "?"		: return Models.Enum.Playable.Unspecified;
+			}
+			return default(Models.Enum.Playable);
 		}
 
 		private static void ParseCrcs(CsQuery.IDomElement tr, Models.GameDisc gameDisc){

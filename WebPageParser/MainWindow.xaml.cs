@@ -23,8 +23,8 @@ namespace WebPageParser {
 			return await Task.Run(() => System.IO.Directory
 				.GetFiles(Environment.CurrentDirectory + "\\pages\\")
 				.OrderBy(p => int.Parse(regex.Match(p).Groups[1].Value))
-				.Skip(1074).Take(1)
-				//.Take(100)
+				//.Skip(1074).Take(1)
+				.Take(100)
 				.Select(System.IO.File.ReadAllText)
 				.ToArray()
 			);
@@ -65,21 +65,11 @@ namespace WebPageParser {
 				var gameDiscCrcs	= gameDiscs.NotNullMany(p => p.GameDiscCrcs	).ToArray();
 				var gameDiscIds		= gameDiscs.NotNullMany(p => p.GameDiscIds	).ToArray();
 
-				context.GameBasicInfoes.AddRange(basicInfo);
-				await context.SaveChangesAsync();
-				//basicInfo.ForEach(p=>p.GameDiscs.ForEach(pp=>pp.GameBasicInfoId = p.Id));
+				context.GameBasicInfoes	.AddRange(basicInfo		);
+				context.GameDisks		.AddRange(gameDiscs		);
+				context.GameDiskCrcs	.AddRange(gameDiscCrcs	);
+				context.GameDiskIds		.AddRange(gameDiscIds	);
 
-				context.GameDisks.AddRange(gameDiscs);
-				await context.SaveChangesAsync();
-				//gameDiscs.ForEach(p =>{
-				//	p.GameDiscCrcs.ForEach(pp => pp.GameDiskId = p.Id);
-				//	p.GameDiscIds .ForEach(pp => pp.GameDiskId = p.Id);
-				//});
-
-				context.GameDiskCrcs.AddRange(gameDiscCrcs);
-				await context.SaveChangesAsync();
-
-				context.GameDiskIds.AddRange(gameDiscIds);
 				await context.SaveChangesAsync();
 			}
 			Dispatcher.Invoke(new Action(() => OutputText.Text += "... Saved to DB"));
