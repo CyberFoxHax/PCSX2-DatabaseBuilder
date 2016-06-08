@@ -67,8 +67,10 @@ namespace WebPageParser.DocumentParsing{
 				.ChildElements
 				.ElementAt(1);
 			string outVal;
-			if (elm.FirstElementChild != null)
+			if (elm.FirstElementChild != null && elm.FirstElementChild.FirstElementChild != null)
 				outVal = elm.FirstElementChild.FirstElementChild.InnerText;
+			else if (elm.FirstElementChild != null)
+				outVal = elm.FirstElementChild.InnerText;
 			else
 				outVal = elm.InnerText;
 			switch (outVal){
@@ -99,7 +101,26 @@ namespace WebPageParser.DocumentParsing{
 				}
 				switch (childElement.NodeName) {
 					case "#text":
-						newDiskId.Crc = int.Parse(childElement.ToString(), System.Globalization.NumberStyles.HexNumber);
+						var str = childElement.ToString();
+						if (str.Contains(",")) {
+						}
+						var regex = Regex.Matches(str, "([0-9A-F]{6,8})", RegexOptions.IgnoreCase);
+						if(regex.Count > 1)
+							foreach (var match in regex.Cast<Group>().Select(p=>p.Value)) {
+								newDiskId.Crc = int.Parse(match, System.Globalization.NumberStyles.HexNumber);
+								newDisk();
+							}
+						else if (regex.Count == 1)
+							newDiskId.Crc = int.Parse(regex[0].Value, System.Globalization.NumberStyles.HexNumber);
+						else{
+							int val;
+							if(int.TryParse(str, out val))
+								newDiskId.Crc = val;
+							else
+								//if (str != "12/09/04")
+									throw new Exception("Invalid CRC: " + str);
+								Console.WriteLine("Invalid CRC: " + str);
+						}
 						break;
 					case "SMALL":
 						newDiskId.Tag = childElement.InnerText.Replace("(", "").Replace(")", "");
@@ -119,11 +140,33 @@ namespace WebPageParser.DocumentParsing{
 					continue;
 				if (childElement.NodeName == "#text"){
 					var outVal = childElement.ToString();
-					if (outVal.Length == 4)
-						gameDisc.ReleaseDate = new DateTime(int.Parse(outVal), 1, 1);
-					else
-						gameDisc.ReleaseDate = DateTime.Parse(outVal);
-					return;
+
+					if (outVal == "?"){
+						gameDisc.ReleaseDate = default(DateTime);
+						return;
+					}
+
+					DateTime time;
+					if (DateTime.TryParse(outVal, out time)) {
+						gameDisc.ReleaseDate = time;
+						return;
+					}
+
+					var regex = Regex.Match(outVal, "Q([1234]) ([0-9]{4})");
+					if (regex.Success){
+						var q = int.Parse(regex.Groups[1].Value);
+						var year = int.Parse(regex.Groups[2].Value);
+						gameDisc.ReleaseDate = new DateTime(year, 3*q, 1);
+						return;
+					}
+
+					regex = Regex.Match(outVal, "([0-9]{4})");
+					if (regex.Success && regex.Groups.Count > 1) {
+						gameDisc.ReleaseDate = new DateTime(int.Parse(regex.Groups[1].Value), 1, 1);
+						return;
+					}
+
+					throw new Exception("Invalid date: " + outVal);
 				}
 			}
 		}

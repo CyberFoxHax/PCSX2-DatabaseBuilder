@@ -24,7 +24,7 @@ namespace WebPageParser {
 				.GetFiles(Environment.CurrentDirectory + "\\pages\\")
 				.OrderBy(p => int.Parse(regex.Match(p).Groups[1].Value))
 				//.Skip(1074).Take(1)
-				.Take(100)
+				//.Take(100)
 				.Select(System.IO.File.ReadAllText)
 				.ToArray()
 			);

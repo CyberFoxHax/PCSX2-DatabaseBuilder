@@ -4,8 +4,8 @@
         Title="MainWindow" Height="85" Width="507">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="27*"/>
-            <RowDefinition Height="37*"/>
+            <RowDefinition Height="23"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="OutputText" Text="Diu" Grid.Row="0"></TextBlock>
         <ProgressBar x:Name="ProgressBar" Grid.Row="1"></ProgressBar>
