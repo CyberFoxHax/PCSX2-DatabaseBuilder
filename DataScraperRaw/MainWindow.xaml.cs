@@ -54,7 +54,6 @@ namespace DataScraperRaw {
 			}
 		}
 
-
 		protected override void OnInitialized(EventArgs e){
 			base.OnInitialized(e);
 
@@ -108,11 +107,12 @@ namespace DataScraperRaw {
 			next.Send();
 		}
 
+		private static readonly List<string> UrlsAsList = GamesUrlsList.Urls.ToList();
 
 		private void SaveFile(Request request){
 			try{
 				System.IO.Directory.CreateDirectory(Environment.CurrentDirectory + "\\pages\\");
-				var file = System.IO.File.CreateText(Environment.CurrentDirectory + "\\pages\\#" + (_allRequests.IndexOf(request) + 1) + ".html");
+				var file = System.IO.File.CreateText(Environment.CurrentDirectory + "\\pages\\#" + (UrlsAsList.IndexOf(request.Url) + 1) + ".html");
 				file.Write(request.Response);
 				file.Close();
 			}

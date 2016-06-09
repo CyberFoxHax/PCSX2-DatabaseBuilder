@@ -1,6 +1,6 @@
 namespace DataScraperRaw{
 	public class Request {
-		private readonly string _url;
+		public readonly string Url;
 		public RequestState State { get; set; }
 		public string GameName { get; set; }
 		internal RequestHelper.RequestHandler Handler;
@@ -8,14 +8,14 @@ namespace DataScraperRaw{
 		internal string Response;
 
 		public Request(string url, System.Windows.Threading.Dispatcher dispatcher){
-			_url = url;
+			Url = url;
 			State = RequestState.Waiting;
 			GameName = url.Replace("_", " ");
 			CreateHandler();
 		}
 
 		public void CreateHandler(){
-			Handler = new RequestHelper.RequestHandler(GamesUrlsList.UrlPrefix + _url) {
+			Handler = new RequestHelper.RequestHandler(GamesUrlsList.UrlPrefix + Url) {
 				Timeout = 10000
 			};
 			Handler.OnSuccess += HandlerOnOnSuccess;
