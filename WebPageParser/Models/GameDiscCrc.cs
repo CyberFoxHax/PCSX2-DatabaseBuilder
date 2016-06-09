@@ -1,9 +1,12 @@
-﻿namespace WebPageParser.Models{
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebPageParser.Models{
 	public class GameDiscCrc{
-		[System.ComponentModel.DataAnnotations.Key]
+		[Key]
 		public long Id { get; set; }
 		public int Crc { get; set; }
-		[System.ComponentModel.DataAnnotations.StringLength(50)]
+
+		[StringLength(50)]
 		public string Tag { get; set; }
 
 		public virtual GameDisc GameDisc { get; set; }

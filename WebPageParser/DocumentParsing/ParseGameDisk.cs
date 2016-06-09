@@ -167,10 +167,10 @@ namespace WebPageParser.DocumentParsing{
 		}
 
 		private static void ParseDiskId(CsQuery.IDomElement tr, Models.GameDisc gameDisc){
-			var result = new List<Models.GameDiscId>();
-			var newDiskId = new Models.GameDiscId{GameDisc = gameDisc};
+			var result = new List<Models.GameDiscSerial>();
+			var newDiskId = new Models.GameDiscSerial{GameDisc = gameDisc};
 			Action newDisk = () =>{
-				newDiskId = new Models.GameDiscId { GameDisc = gameDisc };
+				newDiskId = new Models.GameDiscSerial { GameDisc = gameDisc };
 				result.Add(newDiskId);
 			};
 			newDisk();
@@ -185,7 +185,7 @@ namespace WebPageParser.DocumentParsing{
 				}
 				switch (childElement.NodeName){
 					case "#text":
-						newDiskId.DiskId = childElement.ToString();
+						newDiskId.SerialNumber = childElement.ToString();
 						break;
 					case "SMALL":
 						newDiskId.Tag = childElement.InnerText.Replace("(", "").Replace(")", "");

@@ -12,6 +12,18 @@ namespace WebPageParser.DocumentParsing{
 		public Models.GameBasicInfo Parse() {
 			var basicInfo = new Models.GameBasicInfo();
 			basicInfo.Title = _doc["#firstHeading > span[dir=auto]"].Text();
+			{
+				var accessString = _doc["#footer-info-viewcount"].Text();
+				var regex = System.Text.RegularExpressions.Regex.Match(
+					accessString,
+					"This page has been accessed ([0-9,]+) times"
+				);
+				var cleanString = regex.Groups[1].Value;
+				if (string.IsNullOrEmpty(cleanString) == false)
+					basicInfo.AccessCount = int.Parse(cleanString, System.Globalization.NumberStyles.AllowThousands);
+				else
+					basicInfo.AccessCount = -1;
+			}
 			basicInfo.ReviewScore = GetReviewScore();
 
 			var dict = new System.Collections.Generic.Dictionary<string, Action<string>>{

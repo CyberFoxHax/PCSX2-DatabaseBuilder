@@ -13,15 +13,12 @@ namespace WebPageParser.DocumentParsing {
 			var languages = new ParseGameLanguage(doc).Parse();
 			if(languages.Any())
 				foreach (var gameDiscId in gameDisks.NotNullMany(p => p.GameDiscIds)) {
-					var langaugeGroup = languages.FirstOrDefault(p => p.GameDiskId == gameDiscId.DiskId);
-
+					var langaugeGroup = languages.FirstOrDefault(p => p.GameDiskId == gameDiscId.SerialNumber);
 					if (langaugeGroup != null)
 						gameDiscId.AvailableLanguages = langaugeGroup.Languages;
-					else{
-						
-					}
 				}
 
+			GameBasicInfo.UrlPcsx2Wiki = url;
 			GameBasicInfo.GameDiscs = gameDisks;
 			gameDisks.ForEach(p=>p.GameBasicInfo = GameBasicInfo);
 		}

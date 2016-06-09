@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WebPageParser.Models{
 	public class GameDisc {
@@ -15,7 +14,7 @@ namespace WebPageParser.Models{
 
 		public virtual GameBasicInfo GameBasicInfo { get; set; }
 
-		public virtual System.Collections.Generic.IEnumerable<GameDiscId> GameDiscIds { get; set; }
+		public virtual System.Collections.Generic.IEnumerable<GameDiscSerial> GameDiscIds { get; set; }
 		public virtual System.Collections.Generic.IEnumerable<GameDiscCrc> GameDiscCrcs { get; set; }
 	}
 }

@@ -82,7 +82,7 @@
     </ApplicationDefinition>
     <Compile Include="DocumentParsing\ParseGameLanguage.cs" />
     <Compile Include="Models\GameDiscCrc.cs" />
-    <Compile Include="Models\GameDiscId.cs" />
+    <Compile Include="Models\GameDiscSerial.cs" />
     <Compile Include="Utils.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -10,9 +10,10 @@ namespace WebPageParser.Models{
 		[StringLength(100)]	public string Title { get; set; }
 		[StringLength(40)]	public string Developer { get; set; }
 		[StringLength(40)]	public string Genre { get; set; }
-		[StringLength(100)]	public string UrlPcsx2Wiki { get; set; }
+		[StringLength(120)]	public string UrlPcsx2Wiki { get; set; }
 		[StringLength(2000)]public string Description { get; set; }
 
+		public int AccessCount { get; set; }
 		public byte? ReviewScore { get; set; }
 
 		public virtual IEnumerable<GameDisc> GameDiscs { get; set; }
