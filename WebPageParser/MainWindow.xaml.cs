@@ -23,7 +23,7 @@ namespace WebPageParser {
 			return await Task.Run(() => System.IO.Directory
 				.GetFiles(Environment.CurrentDirectory + "\\pages\\")
 				.OrderBy(p => int.Parse(regex.Match(p).Groups[1].Value))
-				//.Skip(1074).Take(1)
+				//.Skip(1074).Take(1) // Final Fantasy X
 				//.Take(100)
 				.Select(System.IO.File.ReadAllText)
 				.ToArray()
@@ -73,6 +73,9 @@ namespace WebPageParser {
 				await context.SaveChangesAsync();
 			}
 			Dispatcher.Invoke(new Action(() => OutputText.Text += "... Saved to DB"));
+
+			await Task.Delay(3000);
+			Dispatcher.Invoke(() => System.Windows.Application.Current.Shutdown());
 		}
 	}
 }

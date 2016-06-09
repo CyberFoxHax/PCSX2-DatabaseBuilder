@@ -5,14 +5,25 @@ using System;
 
 namespace WebPageParser.DocumentParsing{
 	public class ParseGameDisk{
-		private readonly CsQuery.CQ _doc;
-
 		public ParseGameDisk(CsQuery.CQ doc){
 			_doc = doc;
 		}
 
-		public List<Models.GameDisc> Parse(){
+		private readonly CsQuery.CQ _doc;
 
+		public List<Models.GameDisc> Parse(){
+			var gameDiscs = new List<Models.GameDisc>();
+			foreach (var th in GetRegionsHeaders()) {
+				var gameDiskInfo = new Models.GameDisc();
+				foreach (var tr in th.ParentNode.ParentNode.ChildElements.Skip(1))
+					ParseDiskInfo(tr, gameDiskInfo);
+				gameDiscs.Add(gameDiskInfo);
+			}
+
+			return gameDiscs;
+		}
+
+		private IEnumerable<CsQuery.IDomObject> GetRegionsHeaders(){
 			var type = typeof (Models.Enum.Region);
 			var allowedRegions = type
 				.GetMembers()
@@ -27,23 +38,15 @@ namespace WebPageParser.DocumentParsing{
 
 			var regionRegex = new Regex("Region ([A-Z]{3,4}[-]{0,1}[A-Z]{0,1}):");
 
-			var regionheaders = headers
-				.Where(p =>{
-					var regexMatch = regionRegex.Match(p.InnerText);
-					if (regexMatch.Groups.Count <= 1) return false;
-					var match = regexMatch.Groups[1].Value;
-					return allowedRegions.Contains(match);
-				})
-				.ToList();
-			var gameDiscs = new List<Models.GameDisc>();
-			foreach (var th in regionheaders) {
-				var gameDiskInfo = new Models.GameDisc();
-				foreach (var tr in th.ParentNode.ParentNode.ChildElements.Skip(1))
-					ParseDiskInfo(tr, gameDiskInfo);
-				gameDiscs.Add(gameDiskInfo);
-			}
-
-			return gameDiscs;
+			var regionheaders = (
+				from header in headers
+				let regex = regionRegex.Match(header.InnerText)
+				where regex.Groups.Count > 0
+				let value = regex.Groups[1].Value
+				where allowedRegions.Contains(value)
+				select header
+			).ToList();
+			return regionheaders;
 		}
 
 
@@ -105,21 +108,19 @@ namespace WebPageParser.DocumentParsing{
 						if (str.Contains(",")) {
 						}
 						var regex = Regex.Matches(str, "([0-9A-F]{6,8})", RegexOptions.IgnoreCase);
-						if(regex.Count > 1)
-							foreach (var match in regex.Cast<Group>().Select(p=>p.Value)) {
-								newDiskId.Crc = int.Parse(match, System.Globalization.NumberStyles.HexNumber);
-								newDisk();
+						if(regex.Count > 1){
+							var regexMatches = regex.Cast<Group>().Select(p => p.Value).ToArray();
+							for (var i = 0; i < regexMatches.Length; i++){
+								newDiskId.Crc = int.Parse(regexMatches[i], System.Globalization.NumberStyles.HexNumber);
+								if (i < regexMatches.Length-1)
+									newDisk();
 							}
+						}
 						else if (regex.Count == 1)
 							newDiskId.Crc = int.Parse(regex[0].Value, System.Globalization.NumberStyles.HexNumber);
 						else{
-							int val;
-							if(int.TryParse(str, out val))
-								newDiskId.Crc = val;
-							else
-								//if (str != "12/09/04")
-									throw new Exception("Invalid CRC: " + str);
-								Console.WriteLine("Invalid CRC: " + str);
+							if (str != "12/09/04" && str != "2")
+								throw new Exception("Invalid CRC: " + str);
 						}
 						break;
 					case "SMALL":
@@ -146,12 +147,6 @@ namespace WebPageParser.DocumentParsing{
 						return;
 					}
 
-					DateTime time;
-					if (DateTime.TryParse(outVal, out time)) {
-						gameDisc.ReleaseDate = time;
-						return;
-					}
-
 					var regex = Regex.Match(outVal, "Q([1234]) ([0-9]{4})");
 					if (regex.Success){
 						var q = int.Parse(regex.Groups[1].Value);
@@ -166,7 +161,7 @@ namespace WebPageParser.DocumentParsing{
 						return;
 					}
 
-					throw new Exception("Invalid date: " + outVal);
+					gameDisc.ReleaseDate = DateTime.Parse(outVal);
 				}
 			}
 		}

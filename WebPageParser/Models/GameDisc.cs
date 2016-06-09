@@ -9,12 +9,10 @@ namespace WebPageParser.Models{
 		public System.DateTime ReleaseDate { get; set; }
 
 		public Enum.Region Region { get; set; }
-		public Enum.Language AvailableLanguages { get; set; }
 		public Enum.Playable PlayableWindows { get; set; }
 		public Enum.Playable PlayableLinux { get; set; }
 		public Enum.Playable PlayableMac { get; set; }
 
-		//public long GameBasicInfoId { get; set; }
 		public virtual GameBasicInfo GameBasicInfo { get; set; }
 
 		public virtual System.Collections.Generic.IEnumerable<GameDiscId> GameDiscIds { get; set; }
