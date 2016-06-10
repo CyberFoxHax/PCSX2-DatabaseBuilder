@@ -9,7 +9,7 @@ namespace WebPageParser.Models{
 		[StringLength(50)]
 		public string Tag { get; set; }
 
-		public virtual GameDisc GameDisc { get; set; }
+		public virtual GameDiscRegion GameDiscRegion { get; set; }
 
 		public override string ToString() {
 			return Crc.ToString("X") + (string.IsNullOrEmpty(Tag) ? "" : " (" + Tag + ")");

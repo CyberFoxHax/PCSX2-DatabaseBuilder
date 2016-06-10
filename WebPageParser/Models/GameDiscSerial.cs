@@ -7,7 +7,7 @@ namespace WebPageParser.Models{
 		[StringLength(80)] public string Tag { get; set; }
 		public Enum.Language AvailableLanguages { get; set; }
 
-		public virtual GameDisc GameDisc { get; set; }
+		public virtual GameDiscRegion GameDiscRegion { get; set; }
 
 		public override string ToString(){
 			return SerialNumber + (string.IsNullOrEmpty(Tag)?"":" ("+Tag+")");

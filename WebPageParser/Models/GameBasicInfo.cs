@@ -16,6 +16,6 @@ namespace WebPageParser.Models{
 		public int AccessCount { get; set; }
 		public byte? ReviewScore { get; set; }
 
-		public virtual IEnumerable<GameDisc> GameDiscs { get; set; }
+		public virtual IEnumerable<GameDiscRegion> GameDiscs { get; set; }
 	}
 }

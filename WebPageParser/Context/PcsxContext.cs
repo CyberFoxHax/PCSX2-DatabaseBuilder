@@ -16,7 +16,7 @@ namespace WebPageParser.Context {
 			Database.SetInitializer(sqliteConnectionInitializer);
 		}
 
-		public DbSet<Models.GameDisc>			GameDisks			{ get; set; }
+		public DbSet<Models.GameDiscRegion>			GameDisks			{ get; set; }
 		public DbSet<Models.GameDiscSerial>			GameDiskIds			{ get; set; }
 		public DbSet<Models.GameDiscCrc>		GameDiskCrcs		{ get; set; }
 		public DbSet<Models.GameBasicInfo>		GameBasicInfoes		{ get; set; }

@@ -11,10 +11,10 @@ namespace WebPageParser.DocumentParsing{
 
 		private readonly CsQuery.CQ _doc;
 
-		public List<Models.GameDisc> Parse(){
-			var gameDiscs = new List<Models.GameDisc>();
+		public List<Models.GameDiscRegion> Parse(){
+			var gameDiscs = new List<Models.GameDiscRegion>();
 			foreach (var th in GetRegionsHeaders()) {
-				var gameDiskInfo = new Models.GameDisc();
+				var gameDiskInfo = new Models.GameDiscRegion();
 				foreach (var tr in th.ParentNode.ParentNode.ChildElements.Skip(1))
 					ParseDiskInfo(tr, gameDiskInfo);
 				gameDiscs.Add(gameDiskInfo);
@@ -50,17 +50,17 @@ namespace WebPageParser.DocumentParsing{
 		}
 
 
-		private static void ParseDiskInfo(CsQuery.IDomElement tr, Models.GameDisc gameDisc){
+		private static void ParseDiskInfo(CsQuery.IDomElement tr, Models.GameDiscRegion gameDiscRegion){
 			var fieldType = tr.FirstElementChild.FirstElementChild;
 			if (fieldType.NodeName == "FONT")
 				fieldType = fieldType.FirstElementChild;
 			switch (fieldType.InnerText){
-				case "Serial numbers:": ParseDiskId(tr, gameDisc); break;
-				case "Release date:": ParseReleaseDate(tr, gameDisc); break;
-				case "CRCs:": ParseCrcs(tr, gameDisc); break;
-				case "Windows Status:": gameDisc.PlayableWindows = ParseStatus(tr); break;
-				case "Linux Status:": gameDisc.PlayableLinux = ParseStatus(tr); break;
-				case "Mac Status:": gameDisc.PlayableMac = ParseStatus(tr); break;
+				case "Serial numbers:": ParseDiskId(tr, gameDiscRegion); break;
+				case "Release date:": ParseReleaseDate(tr, gameDiscRegion); break;
+				case "CRCs:": ParseCrcs(tr, gameDiscRegion); break;
+				case "Windows Status:": gameDiscRegion.PlayableWindows = ParseStatus(tr); break;
+				case "Linux Status:": gameDiscRegion.PlayableLinux = ParseStatus(tr); break;
+				case "Mac Status:": gameDiscRegion.PlayableMac = ParseStatus(tr); break;
 				default: break;
 			}
 		}
@@ -85,11 +85,11 @@ namespace WebPageParser.DocumentParsing{
 			return default(Models.Enum.Playable);
 		}
 
-		private static void ParseCrcs(CsQuery.IDomElement tr, Models.GameDisc gameDisc){
+		private static void ParseCrcs(CsQuery.IDomElement tr, Models.GameDiscRegion gameDiscRegion){
 			var result = new List<Models.GameDiscCrc>();
-			var newDiskId = new Models.GameDiscCrc { GameDisc = gameDisc };
+			var newDiskId = new Models.GameDiscCrc { GameDiscRegion = gameDiscRegion };
 			Action newDisk = () => {
-				newDiskId = new Models.GameDiscCrc { GameDisc = gameDisc };
+				newDiskId = new Models.GameDiscCrc { GameDiscRegion = gameDiscRegion };
 				result.Add(newDiskId);
 			};
 			newDisk();
@@ -128,10 +128,10 @@ namespace WebPageParser.DocumentParsing{
 						break;
 				}
 			}
-			gameDisc.GameDiscCrcs = result;
+			gameDiscRegion.GameDiscCrcs = result;
 		}
 
-		private static void ParseReleaseDate(CsQuery.IDomElement tr, Models.GameDisc gameDisc){
+		private static void ParseReleaseDate(CsQuery.IDomElement tr, Models.GameDiscRegion gameDiscRegion){
 			foreach (var childElement in tr
 				.ChildElements
 				.ElementAt(1)
@@ -143,7 +143,7 @@ namespace WebPageParser.DocumentParsing{
 					var outVal = childElement.ToString();
 
 					if (outVal == "?"){
-						gameDisc.ReleaseDate = default(DateTime);
+						gameDiscRegion.ReleaseDate = default(DateTime);
 						return;
 					}
 
@@ -151,26 +151,26 @@ namespace WebPageParser.DocumentParsing{
 					if (regex.Success){
 						var q = int.Parse(regex.Groups[1].Value);
 						var year = int.Parse(regex.Groups[2].Value);
-						gameDisc.ReleaseDate = new DateTime(year, 3*q, 1);
+						gameDiscRegion.ReleaseDate = new DateTime(year, 3*q, 1);
 						return;
 					}
 
 					regex = Regex.Match(outVal, "([0-9]{4})");
 					if (regex.Success && regex.Groups.Count > 1) {
-						gameDisc.ReleaseDate = new DateTime(int.Parse(regex.Groups[1].Value), 1, 1);
+						gameDiscRegion.ReleaseDate = new DateTime(int.Parse(regex.Groups[1].Value), 1, 1);
 						return;
 					}
 
-					gameDisc.ReleaseDate = DateTime.Parse(outVal);
+					gameDiscRegion.ReleaseDate = DateTime.Parse(outVal);
 				}
 			}
 		}
 
-		private static void ParseDiskId(CsQuery.IDomElement tr, Models.GameDisc gameDisc){
+		private static void ParseDiskId(CsQuery.IDomElement tr, Models.GameDiscRegion gameDiscRegion){
 			var result = new List<Models.GameDiscSerial>();
-			var newDiskId = new Models.GameDiscSerial{GameDisc = gameDisc};
+			var newDiskId = new Models.GameDiscSerial{GameDiscRegion = gameDiscRegion};
 			Action newDisk = () =>{
-				newDiskId = new Models.GameDiscSerial { GameDisc = gameDisc };
+				newDiskId = new Models.GameDiscSerial { GameDiscRegion = gameDiscRegion };
 				result.Add(newDiskId);
 			};
 			newDisk();
@@ -192,7 +192,7 @@ namespace WebPageParser.DocumentParsing{
 						break;
 				}
 			}
-			gameDisc.GameDiscIds = result;
+			gameDiscRegion.GameDiscSerialNumbers = result;
 		}
 	}
 }

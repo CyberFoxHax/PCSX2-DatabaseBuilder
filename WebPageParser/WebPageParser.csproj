@@ -108,7 +108,7 @@
     <Compile Include="Models\EmulationSettings.cs" />
     <Compile Include="Models\Enum\FrameSkipMode.cs" />
     <Compile Include="Models\GameBasicInfo.cs" />
-    <Compile Include="Models\GameDisc.cs" />
+    <Compile Include="Models\GameDiscRegion.cs" />
     <Compile Include="Models\GraphicsPlugin.cs" />
     <Compile Include="Models\Enum\GSAspectRatio.cs" />
     <Compile Include="Models\Enum\Language.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace WebPageParser.Models{
-	public class GameDisc {
+	public class GameDiscRegion {
 		[Key]
 		public long Id { get; set; }
 		
@@ -14,7 +14,7 @@ namespace WebPageParser.Models{
 
 		public virtual GameBasicInfo GameBasicInfo { get; set; }
 
-		public virtual System.Collections.Generic.IEnumerable<GameDiscSerial> GameDiscIds { get; set; }
+		public virtual System.Collections.Generic.IEnumerable<GameDiscSerial> GameDiscSerialNumbers { get; set; }
 		public virtual System.Collections.Generic.IEnumerable<GameDiscCrc> GameDiscCrcs { get; set; }
 	}
 }

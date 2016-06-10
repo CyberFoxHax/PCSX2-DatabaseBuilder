@@ -63,7 +63,7 @@ namespace WebPageParser {
 				var basicInfo = result.NotNull().ToArray();
 				var gameDiscs		= basicInfo.NotNullMany(p => p.GameDiscs	).ToArray();
 				var gameDiscCrcs	= gameDiscs.NotNullMany(p => p.GameDiscCrcs	).ToArray();
-				var gameDiscIds		= gameDiscs.NotNullMany(p => p.GameDiscIds	).ToArray();
+				var gameDiscIds		= gameDiscs.NotNullMany(p => p.GameDiscSerialNumbers	).ToArray();
 
 				context.GameBasicInfoes	.AddRange(basicInfo		);
 				context.GameDisks		.AddRange(gameDiscs		);

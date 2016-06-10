@@ -12,7 +12,7 @@ namespace WebPageParser.DocumentParsing {
 			var gameDisks = new ParseGameDisk(doc).Parse();
 			var languages = new ParseGameLanguage(doc).Parse();
 			if(languages.Any())
-				foreach (var gameDiscId in gameDisks.NotNullMany(p => p.GameDiscIds)) {
+				foreach (var gameDiscId in gameDisks.NotNullMany(p => p.GameDiscSerialNumbers)) {
 					var langaugeGroup = languages.FirstOrDefault(p => p.GameDiskId == gameDiscId.SerialNumber);
 					if (langaugeGroup != null)
 						gameDiscId.AvailableLanguages = langaugeGroup.Languages;
